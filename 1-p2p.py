@@ -14,15 +14,15 @@ Run with:
 from mpi4py import MPI
 
 comm = MPI.COMM_WORLD
-rank = comm.Get_rank()
 
+rank = comm.Get_rank()
 data = None
 if rank == 0:
     n_procs = comm.Get_size()
-    print(f'Number of processes: {n_procs}')
-    data = {'a': 7, 'b': 3.14}
-    comm.send(data, dest=1, tag=11)
+    print(f'{n_procs} procs')
+    data = {'a': 3}
+    comm.send(data, dest=1, tag=0)
 elif rank == 1:
-    data = comm.recv(source=0, tag=11)
+    data = comm.recv(source=0, tag=0)
 
-print(f'Rank {rank}: data: {data}')
+print(f'P{rank}: {data}')

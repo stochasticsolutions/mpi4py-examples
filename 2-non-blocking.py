@@ -19,12 +19,12 @@ rank = comm.Get_rank()
 data = None
 if rank == 0:
     n_procs = comm.Get_size()
-    print(f'Number of processes: {n_procs}')
-    data = {'a': 7, 'b': 3.14}
-    req = comm.isend(data, dest=1, tag=11)
+    print(f'{n_procs} procs: ')
+    data = {'a': 3, }
+    req = comm.isend(data, dest=1, tag=0)
     req.wait()
 elif rank == 1:
-    req = comm.irecv(source=0, tag=11)
+    req = comm.irecv(source=0, tag=0)
     data = req.wait()
 
-print(f'Rank {rank}: data: {data}')
+print(f'P{rank}: data: {data}')

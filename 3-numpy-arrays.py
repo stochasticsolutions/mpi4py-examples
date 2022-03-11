@@ -1,7 +1,7 @@
 """
 3-numpy-arrays.py
 
-ased on the third example "Numpy arrays (the fast way!)":
+Based on the third example "Numpy arrays (the fast way!)":
 in the mpi4py documentation
 (as of 2022-03-01, commit d4ae0e73493ba319a3794db6644201b9a8a548e3).
 
@@ -23,13 +23,13 @@ data = None
 # passing MPI datatypes explicitly
 if rank == 0:
     n_procs = comm.Get_size()
-    print(f'Number of processes: {n_procs}')
+    print(f'{n_procs} procs: ')
     data = numpy.arange(10, dtype='i')
-    comm.Send([data, MPI.INT], dest=1, tag=77)
+    comm.Send([data, MPI.INT], dest=1, tag=0)
 elif rank == 1:
     data = numpy.empty(10, dtype='i')
-    comm.Recv([data, MPI.INT], source=0, tag=77)
-print(f'Rank {rank}: data: {data}')
+    comm.Recv([data, MPI.INT], source=0, tag=0)
+print(f'P{rank}: data: {data}')
 
 
 # automatic MPI datatype discovery
