@@ -1,5 +1,5 @@
 """
-9-gather-numpy-array.py
+9-gather-numpy-arrays.py
 
 Based on the eighth example "Gathering Numpy Arrays"
 in the mpi4py documentation
@@ -7,7 +7,7 @@ in the mpi4py documentation
 
 Run with:
 
-    mpiexec -n 4 python 7-broadcast-numpy-array.py
+    mpiexec -n 4 python 9-gather-numpy-arrays.py
 
 """
 import time

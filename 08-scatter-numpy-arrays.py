@@ -1,5 +1,5 @@
 """
-8-scatter-numpy-array.py
+8-scatter-numpy-arrays.py
 
 Based on the eighth example "Scattering Numpy Arrays"
 in the mpi4py documentation
@@ -7,7 +7,7 @@ in the mpi4py documentation
 
 Run with:
 
-    mpiexec -n 4 python 7-broadcast-numpy-array.py
+    mpiexec -n 4 python 8-scatter-numpy-arrays.py
 
 """
 
