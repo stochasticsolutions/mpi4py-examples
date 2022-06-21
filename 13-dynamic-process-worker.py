@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 13-dynamic-process-worker.py
 
@@ -8,10 +9,9 @@ in the mpi4py documentation
 Run by 13-dynamic-process-master.py
 
 """
-
-#!/usr/bin/env python
-from mpi4py import MPI
 import numpy
+
+from mpi4py import MPI
 
 comm = MPI.Comm.Get_parent()
 size = comm.Get_size()
