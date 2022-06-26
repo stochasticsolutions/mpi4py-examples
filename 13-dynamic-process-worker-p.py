@@ -17,8 +17,12 @@ comm = MPI.Comm.Get_parent()
 size = comm.Get_size()
 rank = comm.Get_rank()
 
-N = numpy.array(0, dtype='i')
-comm.Bcast([N, MPI.INT], root=0)
+N = numpy.array(0, dtype='i')  #  Scalar zero (value doesn't matter,
+                               #  will be overwritten by broadcast)
+
+print(f'Worker {rank} awaiting broadcast')
+comm.Bcast([N, MPI.INT], root=0)  # Sets N to number of iterations
+print(f'Worker {rank} received broadcast')
 
 h = 1.0 / N
 s = 0.0
@@ -27,7 +31,8 @@ for i in range(rank, N, size):
     s += 4.0 / (1.0 + x**2)
 PI = numpy.array(s * h, dtype='d')
 
-comm.Reduce([PI, MPI.DOUBLE], None,
-            op=MPI.SUM, root=0)
+print(f'Worker {rank} reducing')
+comm.Reduce([PI, MPI.DOUBLE], None, op=MPI.SUM, root=0)
+print(f'Worker {rank} reduced')
 
 comm.Disconnect()
