@@ -1,5 +1,5 @@
 """
-1-p2p.py
+01-p2p.py: Blocking point-to-point communication
 
 Based on the first example "Point-to-Point Communication"
 in the mpi4py documentation
@@ -7,22 +7,37 @@ in the mpi4py documentation
 
 Run with:
 
-   mpiexec -n 4 python 01-p2p.py
+   mpiexec -n 2 python 01-p2p.py
 
+to run on 2 processors.
+
+This illustrates BLOCKING point-to-point communication.
+
+Process 0 sends {'a': 3} to Process 1, blocks until it is safe to modify
+the data it sent, then modifies the value of key 'a' by doubling it.
+
+The receiver (1) blocks until it has received the data for process 0.
+
+Both processes report the contents of their data.
+(Any processes beyond 2 report None for their data.)
 """
 
 from mpi4py import MPI
 
-comm = MPI.COMM_WORLD
+comm = MPI.COMM_WORLD                   # The MPI Intercom
+rank = comm.Get_rank()                  # Processor ID
+data = None                             # For any processors with rank > 1
 
-rank = comm.Get_rank()
-data = None
 if rank == 0:
     n_procs = comm.Get_size()
-    print(f'{n_procs} procs')
-    data = {'a': 3}
-    comm.send(data, dest=1, tag=0)
+    print(f'Running on {n_procs} processors')
+    data = {'a': 3}                     # Could be anything pickleable
+    comm.send(data, dest=1, tag=0)      # Blocking send for Python object
+                                        # Tag is optional, but must match
+                                        # if used
+    data['a'] *= 2                      # Safe to modify now
 elif rank == 1:
-    data = comm.recv(source=0, tag=0)
+    data = comm.recv(source=0, tag=0)   # Blocking receive for Python object
+                                        # Tag is optional
 
-print(f'P{rank}: {data}')
+print(f'P{rank}: {data}')               # Runs on all processors

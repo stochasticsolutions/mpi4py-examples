@@ -1,5 +1,6 @@
 """
-6-gather.py
+06-gather.py: Collation of results from all processors into a list
+              on a nominated processor.
 
 Based on the sixth example "Gathering Python objects"
 in the mpi4py documentation
@@ -7,24 +8,30 @@ in the mpi4py documentation
 
 Run with:
 
-    mpiexec -n 4 python 6-gather.py
+    mpiexec -n 4 python 06-gather.py
+
+to run on 4 processors.
+
+Gather operations construct a list on the specified root with
+a result from each process.
 
 """
 
 from mpi4py import MPI
 
-comm = MPI.COMM_WORLD
+comm = MPI.COMM_WORLD                   # The MPI Intercom
+rank = comm.Get_rank()                  # Processor ID
 size = comm.Get_size()
-rank = comm.Get_rank()
 
-data = (rank+1)**2
-data = comm.gather(data, root=0)
+part = (rank, rank ** 2)
+combined = comm.gather(part, root=0)    # data is assembled at root only
+                                        # Blocking gather operation
+
 if rank == 0:
     print(f'Number of processes: {size}')
     for i in range(size):
-        assert data[i] == (i+1)**2
+        assert combined[i] == (i, i ** 2)   # Confirm results as expected
 else:
-    assert data is None
+    assert combined is None
 
-print(f'Rank {rank}: data: {data}')
-
+print(f'Rank {rank}: part: {part}  combined: {combined}')
