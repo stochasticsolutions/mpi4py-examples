@@ -7,7 +7,7 @@ in the mpi4py documentation
 
 Run with:
 
-   mpiexec -n 4 python 1-p2p.py
+   mpiexec -n 4 python 01-p2p.py
 
 """
 
